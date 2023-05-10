@@ -490,45 +490,66 @@ const accumulateValue = (items: TechnicalSkillItem[], key: string): number => {
 
 <template>
     <main>
-        <v-expansion-panels :multiple="true">
-            <v-expansion-panel v-for="technicalSkill in technicalSkills" :key="technicalSkill.name">
-                <v-expansion-panel-title class="progress-bar">
-                    <div class="name">
-                        <strong>{{ technicalSkill.name }}</strong>
-                    </div>
-                    <div class="scoring">
-                        {{ total(technicalSkill) }} von {{ maximalTotal(technicalSkill) }}
-                    </div>
-                    <div class="average">
-                        Ø {{ average(technicalSkill) }}
-                    </div></v-expansion-panel-title
+        <v-container>
+            <h2 class="pagetitle">Technical goal</h2>
+
+            <v-expansion-panels :multiple="true">
+                <v-expansion-panel
+                    v-for="technicalSkill in technicalSkills"
+                    :key="technicalSkill.name"
                 >
-                <v-expansion-panel-text>
-                    <v-table>
-                        <tbody>
-                            <tr
-                                v-for="technicalSkillItem in technicalSkill.items"
-                                :key="technicalSkillItem.index"
-                            >
-                                <td v-html="technicalSkillItem.description"></td>
-                                <td class="score">{{ technicalSkillItem.score }}</td>
-                            </tr>
-                        </tbody>
-                    </v-table>
-                </v-expansion-panel-text>
-            </v-expansion-panel>
-        </v-expansion-panels>
+                    <v-expansion-panel-title class="progress-bar">
+                        <div class="name">
+                            <strong>{{ technicalSkill.name }}</strong>
+                        </div>
+                        <div class="scoring">
+                            {{ total(technicalSkill) }} von {{ maximalTotal(technicalSkill) }}
+                        </div>
+                        <div class="average">
+                            Ø {{ average(technicalSkill) }}
+                        </div></v-expansion-panel-title
+                    >
+                    <v-expansion-panel-text>
+                        <v-table>
+                            <tbody>
+                                <tr
+                                    v-for="technicalSkillItem in technicalSkill.items"
+                                    :key="technicalSkillItem.index"
+                                >
+                                    <td v-html="technicalSkillItem.description"></td>
+                                    <td
+                                        class="score"
+                                        :class="{
+                                            glow:
+                                                technicalSkillItem.score ===
+                                                technicalSkillItem.maximalScore
+                                        }"
+                                    >
+                                        {{ technicalSkillItem.score }}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </v-table>
+                    </v-expansion-panel-text>
+                </v-expansion-panel>
+            </v-expansion-panels>
+        </v-container>
     </main>
 </template>
 
 <style scoped>
+.pagetitle {
+    font-size: 30px;
+}
+
 .v-table > .v-table__wrapper > table > tbody > tr > td {
-    padding-top: 10px;
-    padding-bottom: 10px;
+    padding: 6px;
 }
 
 .name {
-    width: 40%;
+    font-size: 16px;
+    width: 160px;
+    padding-right: 20px;
 }
 
 .scoring {
@@ -541,7 +562,26 @@ const accumulateValue = (items: TechnicalSkillItem[], key: string): number => {
 }
 
 .score {
-    font-size: 18px;
+    font-size: 25px;
     font-weight: bold;
+}
+
+.glow {
+    color: #fff;
+    text-align: center;
+    -webkit-animation: glow 0.2s ease-in-out infinite alternate;
+    -moz-animation: glow 0.2s ease-in-out infinite alternate;
+    animation: glow 0.2s ease-in-out infinite alternate;
+}
+
+@-webkit-keyframes glow {
+    from {
+        text-shadow: 0 0 5px #fff, 0 0 5px #fff, 0 0 15px #e60000, 0 0 20px #e60000,
+            0 0 25px #e60000, 0 0 30px #e60000, 0 0 35px #e60000;
+    }
+    to {
+        text-shadow: 0 0 10px #fff, 0 0 15px #ff4d4d, 0 0 20px #ff4d4d, 0 0 25px #ff4d4d,
+            0 0 30px #ff4d4d, 0 0 35px #ff4d4d, 0 0 40px #ff4d4d;
+    }
 }
 </style>
