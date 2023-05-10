@@ -460,15 +460,11 @@ const technicalSkills: TechnicalSkill[] = [
 ]
 
 const total = (technicalSkill: TechnicalSkill) => {
-    return technicalSkill.items
-        .map((item: TechnicalSkillItem) => item.score)
-        .reduce((previousValue, currentValue) => previousValue + currentValue, 0)
+    return accumulateValue(technicalSkill.items, 'score')
 }
 
 const maximalTotal = (technicalSkill: TechnicalSkill) => {
-    return technicalSkill.items
-        .map((item: TechnicalSkillItem) => item.maximalScore)
-        .reduce((previousValue, currentValue) => previousValue + currentValue, 0)
+    return accumulateValue(technicalSkill.items, 'maximalScore')
 }
 
 const average = (technicalSkill: TechnicalSkill) => {
@@ -480,12 +476,15 @@ const average = (technicalSkill: TechnicalSkill) => {
         (technicalSkillItem: TechnicalSkillItem) => technicalSkillItem.score !== null
     )
 
-    return (
-        scoredItems
-            .map((item: TechnicalSkillItem) => item.score)
-            .reduce((previousValue, currentValue) => previousValue + currentValue, 0) /
-        scoredItems.length
-    ).toFixed(1)
+    return (accumulateValue(scoredItems, 'score') / scoredItems.length).toFixed(1)
+}
+
+const accumulateValue = (items: TechnicalSkillItem[], key: string): number => {
+    return Number(
+        items
+            .map((item: TechnicalSkillItem) => item[key as keyof TechnicalSkillItem] as number)
+            .reduce((previousValue, currentValue) => (previousValue || 0) + (currentValue || 0), 0)
+    )
 }
 </script>
 
