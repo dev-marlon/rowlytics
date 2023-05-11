@@ -1,15 +1,6 @@
 <script setup lang="ts">
-interface TechnicalSkill {
-    name: string
-    items: TechnicalSkillItem[]
-}
-
-interface TechnicalSkillItem {
-    index: number
-    description: string
-    score: number | null
-    maximalScore: number
-}
+import ProgressBar from '@/components/ProgressBar.vue'
+import { TechnicalSkill, TechnicalSkillItem } from '@/models/technical-skill.model'
 
 const technicalSkills: TechnicalSkill[] = [
     {
@@ -489,99 +480,120 @@ const accumulateValue = (items: TechnicalSkillItem[], key: string): number => {
 </script>
 
 <template>
-    <main>
-        <v-container>
-            <h2 class="pagetitle">Technical goal</h2>
+    <v-container>
+        <h2 class="pagetitle">Technical goal</h2>
 
-            <v-expansion-panels :multiple="true">
-                <v-expansion-panel
-                    v-for="technicalSkill in technicalSkills"
-                    :key="technicalSkill.name"
-                >
-                    <v-expansion-panel-title class="progress-bar">
+        <v-expansion-panels variant="accordion" :multiple="true" class="technical-skills-panels">
+            <v-expansion-panel v-for="technicalSkill in technicalSkills" :key="technicalSkill.name">
+                <v-expansion-panel-title>
+                    <div class="header">
                         <div class="name">
                             <strong>{{ technicalSkill.name }}</strong>
                         </div>
                         <div class="scoring">
                             {{ total(technicalSkill) }} von {{ maximalTotal(technicalSkill) }}
                         </div>
-                        <div class="average">
-                            Ø {{ average(technicalSkill) }}
-                        </div></v-expansion-panel-title
-                    >
-                    <v-expansion-panel-text>
-                        <v-table>
-                            <tbody>
-                                <tr
-                                    v-for="technicalSkillItem in technicalSkill.items"
-                                    :key="technicalSkillItem.index"
-                                >
-                                    <td v-html="technicalSkillItem.description"></td>
-                                    <td
-                                        class="score"
-                                        :class="{
-                                            glow:
-                                                technicalSkillItem.score ===
-                                                technicalSkillItem.maximalScore
-                                        }"
-                                    >
-                                        {{ technicalSkillItem.score }}
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </v-table>
-                    </v-expansion-panel-text>
-                </v-expansion-panel>
-            </v-expansion-panels>
-        </v-container>
-    </main>
+                        <div class="average">Ø {{ average(technicalSkill) }}</div>
+                    </div>
+                    <div class="progress-bar">
+                        <ProgressBar
+                            :total="total(technicalSkill)"
+                            :max="maximalTotal(technicalSkill)"
+                        ></ProgressBar>
+                    </div>
+                </v-expansion-panel-title>
+                <v-expansion-panel-text>
+                    <v-table>
+                        <tbody>
+                            <tr
+                                v-for="technicalSkillItem in technicalSkill.items"
+                                :key="technicalSkillItem.index"
+                            >
+                                <td
+                                    v-html="technicalSkillItem.description"
+                                    class="description"
+                                ></td>
+                                <td class="score">
+                                    {{ technicalSkillItem.score }}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </v-table>
+                </v-expansion-panel-text>
+            </v-expansion-panel>
+        </v-expansion-panels>
+    </v-container>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 .pagetitle {
     font-size: 30px;
 }
 
-.v-table > .v-table__wrapper > table > tbody > tr > td {
-    padding: 6px;
-}
-
 .name {
-    font-size: 16px;
-    width: 160px;
+    font-size: 18px;
     padding-right: 20px;
+    margin-bottom: 8px;
 }
 
 .scoring {
     margin-right: 5px;
     width: 75px;
+    margin-bottom: 3px;
 }
 
 .average {
     color: #818181;
 }
 
+.description {
+    padding-right: 10px;
+}
+
 .score {
     font-size: 25px;
-    font-weight: bold;
 }
 
-.glow {
-    color: #fff;
-    text-align: center;
-    -webkit-animation: glow 0.2s ease-in-out infinite alternate;
-    -moz-animation: glow 0.2s ease-in-out infinite alternate;
-    animation: glow 0.2s ease-in-out infinite alternate;
+.progress-bar {
+    position: absolute;
+    bottom: 0;
+    height: 10px;
+    width: 100%;
+    left: 0;
 }
+</style>
 
-@-webkit-keyframes glow {
-    from {
-        text-shadow: 0 0 5px #fff, 0 0 5px #fff, 0 0 15px #e60000, 0 0 20px #e60000,
-            0 0 25px #e60000, 0 0 30px #e60000, 0 0 35px #e60000;
+<style lang="scss">
+.technical-skills-panels {
+    .v-expansion-panel-title__icon {
+        position: absolute;
+        right: 24px;
+        top: 50%;
+        margin-top: -12.25px;
     }
-    to {
-        text-shadow: 0 0 10px #fff, 0 0 15px #ff4d4d, 0 0 20px #ff4d4d, 0 0 25px #ff4d4d,
-            0 0 30px #ff4d4d, 0 0 35px #ff4d4d, 0 0 40px #ff4d4d;
+
+    .v-expansion-panel-title__icon {
+        position: absolute;
+        right: 24px;
+        top: 50%;
+        margin-top: -14.25px;
+    }
+
+    .v-expansion-panel-title {
+        padding: 25px 16px 20px;
+        display: block;
+    }
+
+    .v-expansion-panel-text__wrapper {
+        padding: 8px 16px 16px;
+    }
+
+    .v-expansion-panel--active > .v-expansion-panel-title {
+        min-height: auto;
+    }
+
+    .v-table .v-table__wrapper > table > tbody > tr:not(:last-child) > td {
+        padding: 10px;
     }
 }
 </style>
