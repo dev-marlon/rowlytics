@@ -130,6 +130,10 @@ const items = computed(() => {
 
 .video-player {
     margin-bottom: 15px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    padding: 10px 0 0 0;
 }
 
 .scoring {
