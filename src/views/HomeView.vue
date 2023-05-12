@@ -3,7 +3,8 @@ import ProgressBar from '@/components/ProgressBar.vue'
 import { TechnicalSkill, TechnicalSkillItem } from '@/models/technical-skill.model'
 import { technicalSkills as technicalSkillsJohannes } from '@/data/johannes'
 import { technicalSkills } from '@/data/marie'
-import { computed, reactive, ref } from 'vue'
+import { computed, ref } from 'vue'
+import VideoPlayer from '@/components/VideoPlayer.vue'
 
 const total = (technicalSkill: TechnicalSkill) => {
     return accumulateValue(technicalSkill.items, 'score')
@@ -51,6 +52,12 @@ const selectItems = [
 const items = computed(() => {
     return dataMap[selected.value]
 })
+
+// Video
+// loop
+// start automaticly when hidden in small mode
+
+// main max width 500px
 </script>
 
 <template>
@@ -62,6 +69,7 @@ const items = computed(() => {
             label="Student"
             density="compact"
         ></v-select>
+        <VideoPlayer></VideoPlayer>
         <v-expansion-panels variant="accordion" :multiple="true" class="technical-skills-panels">
             <v-expansion-panel v-for="technicalSkill in items" :key="technicalSkill.name">
                 <v-expansion-panel-title>
