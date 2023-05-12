@@ -59,14 +59,18 @@ const items = computed(() => {
 
 <template>
     <v-container>
-        <h2 class="pagetitle">Technical goal</h2>
+        <div class="intro">
+            <h1>Allemannen Klinik</h1>
+            <h3>Chefarzt Dr. Miguel Bermudez</h3>
+        </div>
         <v-select
             v-model="selected"
             :items="selectItems"
-            label="Student"
+            label="Patient"
             density="compact"
         ></v-select>
         <VideoPlayer v-if="selected === 'johannes'"></VideoPlayer>
+        <h2 class="pagetitle" v-if="selected !== 'Bitte wählen'">Technical goal</h2>
         <v-expansion-panels variant="accordion" :multiple="true" class="technical-skills-panels">
             <v-expansion-panel v-for="technicalSkill in items" :key="technicalSkill.name">
                 <v-expansion-panel-title>
@@ -110,14 +114,22 @@ const items = computed(() => {
 </template>
 
 <style lang="scss" scoped>
+.intro {
+    margin-bottom: 15px;
+}
+
 .pagetitle {
-    font-size: 30px;
+    font-size: 20px;
 }
 
 .name {
     font-size: 18px;
     padding-right: 20px;
     margin-bottom: 8px;
+}
+
+.video-player {
+    margin-bottom: 15px;
 }
 
 .scoring {

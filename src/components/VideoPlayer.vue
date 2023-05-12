@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="video-player">
         <video ref="videoPlayerReference" class="video-js"></video>
     </div>
 </template>
