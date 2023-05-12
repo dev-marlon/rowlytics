@@ -154,11 +154,12 @@ const video = computed(() => {
 }
 
 .video-player {
-    margin-bottom: 15px;
+    margin-bottom: 30px;
     position: sticky;
     top: 0;
     z-index: 100;
-    padding: 10px 0 0 0;
+    padding: 20px 0 0 0;
+    background: #fff;
 }
 
 .scoring {
