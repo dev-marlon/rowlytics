@@ -10,7 +10,6 @@ const props = defineProps<Props>()
 const value = computed(() => (props.total / props.max) * 100)
 
 const color = ref((value) => {
-    console.log(value)
     if (value >= 75 && value <= 100) {
         return 'green'
     } else if (value >= 50 && value < 75) {
