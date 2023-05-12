@@ -19,6 +19,7 @@ let videoPlayerReference = ref(null)
 let videoPlayer = null
 
 const options = {
+    playsinline: true,
     autoplay: true,
     muted: true,
     loop: true,
