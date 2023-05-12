@@ -6,13 +6,19 @@
 
 <script setup lang="ts">
 import videojs from 'video.js'
-import { onMounted, onUnmounted, ref } from 'vue'
+import { computed, defineProps, onMounted, onUnmounted, ref, onUpdated } from 'vue'
+
+interface Props {
+    src: string
+}
+const props = defineProps<Props>()
+
+const srcValue = computed(() => props.src)
 
 let videoPlayerReference = ref(null)
 let videoPlayer = null
 
 const options = {
-    playsinline: true,
     autoplay: true,
     muted: true,
     loop: true,
@@ -20,22 +26,25 @@ const options = {
     fluid: true,
     sources: [
         {
-            src: 'johannes.mp4',
+            src: srcValue.value,
             type: 'video/mp4'
         }
     ]
 }
 
 onMounted(() => {
-    console.log(videoPlayerReference.value)
-    videoPlayer = videojs(videoPlayerReference.value, options, () => {
-        videoPlayer.log('onPlayerReady', this)
-    })
+    videoPlayer = videojs(videoPlayerReference.value, options)
 })
 
 onUnmounted(() => {
     if (videoPlayer) {
         videoPlayer.dispose()
+    }
+})
+
+onUpdated(() => {
+    if (videoPlayer) {
+        videoPlayer.src(srcValue.value)
     }
 })
 </script>

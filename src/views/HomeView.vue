@@ -35,11 +35,21 @@ const accumulateValue = (items: TechnicalSkillItem[], key: string): number => {
 }
 
 const dataMap = {
-    marie: technicalSkills,
-    johannes: technicalSkillsJohannes
+    marie: {
+        technicalSkills,
+        video: 'marie.mp4'
+    },
+    johannes: {
+        technicalSkills: technicalSkillsJohannes,
+        video: 'johannes.mp4'
+    }
 }
 
-const selected = ref('Bitte wählen')
+enum SelectLabelEnum {
+    Choose = 'Bitte wählen'
+}
+
+const selected = ref(SelectLabelEnum.Choose)
 
 const selectItems = [
     { title: 'Marie', value: 'marie' },
@@ -47,7 +57,17 @@ const selectItems = [
 ]
 
 const items = computed(() => {
-    return dataMap[selected.value]
+    if (selected.value === SelectLabelEnum.Choose) {
+        return false
+    }
+    return dataMap[selected.value].technicalSkills
+})
+
+const video = computed(() => {
+    if (selected.value === SelectLabelEnum.Choose) {
+        return false
+    }
+    return dataMap[selected.value].video
 })
 
 // Video
@@ -69,9 +89,14 @@ const items = computed(() => {
             label="Patient"
             density="compact"
         ></v-select>
-        <VideoPlayer v-if="selected === 'johannes'"></VideoPlayer>
+        <VideoPlayer :src="video" v-if="video"></VideoPlayer>
         <h2 class="pagetitle" v-if="selected !== 'Bitte wählen'">Technical goal</h2>
-        <v-expansion-panels variant="accordion" :multiple="true" class="technical-skills-panels">
+        <v-expansion-panels
+            v-if="items"
+            variant="accordion"
+            :multiple="true"
+            class="technical-skills-panels"
+        >
             <v-expansion-panel v-for="technicalSkill in items" :key="technicalSkill.name">
                 <v-expansion-panel-title>
                     <div class="header">
