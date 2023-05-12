@@ -39,10 +39,7 @@ const dataMap = {
     johannes: technicalSkillsJohannes
 }
 
-const selected = ref({
-    title: 'Bitte wählen',
-    value: ''
-})
+const selected = ref('Bitte wählen')
 
 const selectItems = [
     { title: 'Marie', value: 'marie' },
@@ -69,7 +66,7 @@ const items = computed(() => {
             label="Student"
             density="compact"
         ></v-select>
-        <VideoPlayer></VideoPlayer>
+        <VideoPlayer v-if="selected === 'johannes'"></VideoPlayer>
         <v-expansion-panels variant="accordion" :multiple="true" class="technical-skills-panels">
             <v-expansion-panel v-for="technicalSkill in items" :key="technicalSkill.name">
                 <v-expansion-panel-title>

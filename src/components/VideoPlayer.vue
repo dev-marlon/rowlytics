@@ -15,7 +15,8 @@ const options = {
     playsinline: true,
     autoplay: true,
     muted: true,
-    controls: true,
+    loop: true,
+    controls: false,
     fluid: true,
     sources: [
         {
